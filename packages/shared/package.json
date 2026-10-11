@@ -1,0 +1,8 @@
+{
+  "name": "@coldwallet/shared",
+  "version": "1.0.0",
+  "description": "Shared types and constants for Cold Wallet core and admin dashboard",
+  "main": "src/index.ts",
+  "types": "src/index.ts",
+  "private": true
+}

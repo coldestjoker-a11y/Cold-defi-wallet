@@ -1,0 +1,63 @@
+# Environments & Secrets
+.env
+.env.*
+.env.admin
+.env.wallet
+!.env.example
+!.env.admin.example
+!.env.wallet.example
+
+# Local State & Test Ledger Stores
+wallet_ledger_store.json
+admin_store.json
+defi-orchestrator-py/admin_store.json
+*.store.json
+local_state.json
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+.venv/
+ENV/
+
+# Rust Build Output
+target/
+**/*.rs.bk
+Cargo.lock
+
+# Node / Frontend Build
+node_modules/
+.next/
+dist/
+build/
+.cache/
+
+# Logs & Diagnostics
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+screenshot*.png
+screen_*.png
+
+# Vercel & Deployments
+.vercel
+
+# System & OS
+.DS_Store
+Thumbs.db
+desktop.ini
+*.swp
+*.swo
+
+# IDE & Editor Configs
+.idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace
+

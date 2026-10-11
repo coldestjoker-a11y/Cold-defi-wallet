@@ -1,0 +1,36 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "api/index.py",
+      "use": "@vercel/python"
+    },
+    {
+      "src": "web-interface/**",
+      "use": "@vercel/static"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(api|wallet|swap|bridge|health)(.*)",
+      "dest": "/api/index.py"
+    },
+    {
+      "src": "/styles/(.*)",
+      "dest": "/web-interface/styles/$1"
+    },
+    {
+      "src": "/images/(.*)",
+      "dest": "/web-interface/images/$1"
+    },
+    {
+      "src": "/(logo\\.png|favicon\\.png|favicon\\.ico|privacy-policy\\.html|terms-conditions\\.html)",
+      "dest": "/web-interface/$1"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/web-interface/index.html"
+    }
+  ]
+}
+
