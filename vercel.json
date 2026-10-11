@@ -1,36 +1,51 @@
 {
-  "version": 2,
-  "builds": [
-    {
-      "src": "api/index.py",
-      "use": "@vercel/python"
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "services": {
+    "app": {
+      "root": ".",
+      "framework": "fastapi"
     },
-    {
-      "src": "web-interface/**",
-      "use": "@vercel/static"
+    "admin": {
+      "root": "apps/admin",
+      "framework": "nextjs",
+      "bindings": [
+        {
+          "type": "service",
+          "service": "defi-orchestrator-py",
+          "format": "url",
+          "env": "DEFI_ORCHESTRATOR_URL"
+        }
+      ]
+    },
+    "defi-orchestrator-py": {
+      "root": "defi-orchestrator-py",
+      "framework": "fastapi"
     }
-  ],
-  "routes": [
+  },
+  "rewrites": [
     {
-      "src": "/(api|wallet|swap|bridge|health)(.*)",
-      "dest": "/api/index.py"
+      "source": "/admin",
+      "destination": {
+        "service": "admin"
+      }
     },
     {
-      "src": "/styles/(.*)",
-      "dest": "/web-interface/styles/$1"
+      "source": "/admin/(.*)",
+      "destination": {
+        "service": "admin"
+      }
     },
     {
-      "src": "/images/(.*)",
-      "dest": "/web-interface/images/$1"
+      "source": "/api/(.*)",
+      "destination": {
+        "service": "defi-orchestrator-py"
+      }
     },
     {
-      "src": "/(logo\\.png|favicon\\.png|favicon\\.ico|privacy-policy\\.html|terms-conditions\\.html)",
-      "dest": "/web-interface/$1"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/web-interface/index.html"
+      "source": "/(.*)",
+      "destination": {
+        "service": "app"
+      }
     }
   ]
 }
-

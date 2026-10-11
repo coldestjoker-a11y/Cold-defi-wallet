@@ -3,7 +3,10 @@
  * Isolated client for talking strictly to the DeFi Orchestrator Admin endpoints
  */
 
-const ADMIN_API_BASE = process.env.NEXT_PUBLIC_ADMIN_API_URL || 'http://localhost:8000';
+const ADMIN_API_BASE =
+  process.env.NEXT_PUBLIC_ADMIN_API_URL !== undefined
+    ? process.env.NEXT_PUBLIC_ADMIN_API_URL
+    : (typeof window !== 'undefined' ? '' : 'http://localhost:8000');
 
 export interface AdminApiResponse<T = any> {
   status: string;

@@ -39,7 +39,8 @@ export function adminAuthMiddleware(req: NextRequest) {
     pathname.startsWith('/static') ||
     pathname.startsWith('/favicon') ||
     pathname === '/login' ||
-    pathname === '/api/admin/auth/login'
+    pathname === '/admin/login' ||
+    pathname.endsWith('/auth/login')
   ) {
     return NextResponse.next();
   }
