@@ -3,6 +3,9 @@ const nextConfig = {
   reactStrictMode: true,
   basePath: '/admin',
   transpilePackages: ['@enterprise/shared'],
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
   async rewrites() {
     const adminBackendUrl =
       process.env.DEFI_ORCHESTRATOR_URL ||

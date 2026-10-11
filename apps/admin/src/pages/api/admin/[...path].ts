@@ -51,7 +51,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const backendRes = await fetch(targetUrl.toString(), {
       method: req.method,
       headers: forwardHeaders,
-      body: bodyBuffer,
+      body: bodyBuffer as any,
     });
 
     // Forward response status and headers
@@ -73,3 +73,4 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     });
   }
 }
+

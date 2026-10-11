@@ -1,5 +1,4 @@
 import React from 'react';
-import Link from 'next/router';
 import { useRouter } from 'next/router';
 
 interface NavItem {
