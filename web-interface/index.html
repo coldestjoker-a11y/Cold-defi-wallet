@@ -57,6 +57,11 @@
             <button class="btn-icon" id="openSecurityBtn" title="Wallet Management &amp; Backup" style="color: var(--accent-blue);">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path><circle cx="12" cy="11" r="2.5"></circle><line x1="12" y1="13.5" x2="12" y2="16.5"></line></svg>
             </button>
+
+            <!-- Lock / Sign Out Button (Returns to Welcome Prepage) -->
+            <button class="btn-icon" id="btnHeaderLock" title="Lock Wallet / Sign Out" style="color: var(--accent-rose, #f43f5e);">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+            </button>
         </div>
     </header>
 
@@ -72,6 +77,24 @@
                 <p class="welcome-subtitle">
                     The enterprise multi-chain self-custody crypto wallet. Sign up to generate your private cryptographic keys client-side.
                 </p>
+            </div>
+
+            <!-- Welcome Saved Wallet Banner (shown when a saved wallet exists) -->
+            <div id="welcomeSavedWalletBanner" class="welcome-saved-banner" style="display: none;">
+                <div class="welcome-saved-info">
+                    <div class="welcome-saved-avatar">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="7.5" cy="15.5" r="5.5"></circle><path d="m21 2-9.6 9.6"></path><path d="m15.5 7.5 3 3L22 7l-2-2"></path></svg>
+                    </div>
+                    <div>
+                        <div class="welcome-saved-label">Existing Vault Detected</div>
+                        <div class="welcome-saved-account" id="welcomeSavedAccountName">Account 1</div>
+                        <div class="welcome-saved-addr" id="welcomeSavedAccountAddr">0x000...000</div>
+                    </div>
+                </div>
+                <button class="btn-primary welcome-unlock-btn" id="btnWelcomeUnlock">
+                    <span>Enter Dashboard</span>
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                </button>
             </div>
 
             <div class="welcome-actions">
@@ -141,7 +164,7 @@
                         <span class="pnl-badge pos" id="portfolio24hBadge">+2.45% 24h</span>
                     </div>
 
-                    <div class="dashboard-sub-row" style="display: flex; align-items: center; gap: 8px; margin-top: 12px; flex-wrap: wrap;">
+                    <div class="dashboard-sub-row">
                         <!-- Small Box with Icon on the Dashboard matching the navbar -->
                         <div class="dashboard-account-badge" id="dashboardAccountBtn" title="Click to open Account &amp; Key Management">
                             <div class="account-avatar" id="dashAccountAvatar" style="width: 24px; height: 24px;">
@@ -160,13 +183,6 @@
                             <span id="activeAddressFull">Loading address...</span>
                         </div>
 
-                        <!-- Mobile Network Switcher Pill (down on dashboard on mobile) -->
-                        <div class="network-badge mobile-network-pill" id="mobileNetworkSelectBtn" title="Switch Blockchain Network">
-                            <span class="network-dot"></span>
-                            <span id="currentNetworkLabelMobile">Sepolia Testnet</span>
-                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
-                        </div>
-
                         <!-- Dashboard Quick Nav: Address Book & Contacts Box -->
                         <button class="btn-icon" id="dashboardAddressBookBtn" title="Address Book &amp; Contacts Whitelist" style="color: var(--accent-cyan); width: 34px; height: 34px;">
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2z"></path><circle cx="12" cy="10" r="3"></circle><path d="M8 18a4 4 0 0 1 8 0"></path><line x1="20" y1="8" x2="22" y2="8"></line><line x1="20" y1="12" x2="22" y2="12"></line><line x1="20" y1="16" x2="22" y2="16"></line></svg>
@@ -176,6 +192,15 @@
                         <button class="btn-icon" id="dashboardSecurityBtn" title="Wallet Management &amp; Backup" style="color: var(--accent-blue); width: 34px; height: 34px;">
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path><circle cx="12" cy="11" r="2.5"></circle><line x1="12" y1="13.5" x2="12" y2="16.5"></line></svg>
                         </button>
+                    </div>
+
+                    <!-- Dedicated Network Row (shown below the address/account on mobile) -->
+                    <div class="dashboard-network-row">
+                        <div class="network-badge mobile-network-pill" id="mobileNetworkSelectBtn" title="Switch Blockchain Network">
+                            <span class="network-dot"></span>
+                            <span id="currentNetworkLabelMobile">Sepolia Testnet</span>
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                        </div>
                     </div>
                 </div>
 
@@ -1309,6 +1334,13 @@
 
             const totalPositiveOwned = ASSETS.filter(sym => (walletState.holdings[sym] || 0) > 0).length;
 
+            // When zero balance and onlyOwned, show native asset + USDC for clean 2-column symmetry on mobile
+            if (totalPositiveOwned === 0 && onlyOwned && displayAssets.length === 1) {
+                if (!displayAssets.includes('USDC') && ASSETS.includes('USDC')) {
+                    displayAssets.push('USDC');
+                }
+            }
+
             displayAssets.forEach(sym => {
                 const coin = COINS.find(c => c.sym === sym);
                 const mkt = coin ? marketCache[coin.id] : null;
@@ -1350,18 +1382,18 @@
                 }
             });
 
-            // If account has zero tokens, show clean helpful banner
+            // If account has zero tokens, show compact helpful strip
             if (totalPositiveOwned === 0 && onlyOwned) {
                 const notice = document.createElement('div');
                 notice.className = 'empty-portfolio-notice';
                 notice.style.gridColumn = '1 / -1';
                 notice.innerHTML = `
-                    <div class="empty-notice-title">Account Balance: $0.00 &mdash; Ready for Funding</div>
-                    <div class="empty-notice-sub">You currently hold 0 tokens in this account. Use the built-in Faucet to instantly receive test tokens, or click Receive to copy your address and QR code.</div>
-                    <div class="empty-notice-actions">
-                        <button class="btn-faucet" onclick="window.requestQuickFaucet('ETH', 1.0)">+ Fund 1.0 Test ETH</button>
-                        <button class="btn-faucet" onclick="window.requestQuickFaucet('USDC', 500)">+ Fund 500 Test USDC</button>
-                        <button class="btn-secondary" onclick="openReceiveModal()">Receive / QR Code</button>
+                    <div class="empty-notice-sub" style="display: flex; align-items: center; justify-content: space-between; gap: 8px; flex-wrap: wrap; width: 100%;">
+                        <span>💡 Balance $0.00 &mdash; Ready for testnet funding</span>
+                        <div style="display: flex; gap: 6px;">
+                            <button class="btn-faucet" style="min-height: 24px; padding: 2px 8px; font-size: 10px;" onclick="window.requestQuickFaucet('ETH', 1.0)">+ 1.0 ETH</button>
+                            <button class="btn-faucet" style="min-height: 24px; padding: 2px 8px; font-size: 10px;" onclick="window.requestQuickFaucet('USDC', 500)">+ 500 USDC</button>
+                        </div>
                     </div>
                 `;
                 grid.appendChild(notice);
@@ -3056,15 +3088,34 @@
 
             // Welcome Portal & Dashboard View Switchers
             function showWelcomePortal() {
+                sessionStorage.removeItem('coldwallet_unlocked');
                 const portal = document.getElementById('welcomePortal');
                 const workspace = document.querySelector('.workspace-grid');
                 const bottomBar = document.querySelector('.mobile-bottom-bar');
                 if (portal) portal.style.display = 'flex';
                 if (workspace) workspace.style.display = 'none';
                 if (bottomBar) bottomBar.style.display = 'none';
+
+                // Check if returning user with saved wallet
+                const banner = document.getElementById('welcomeSavedWalletBanner');
+                if (banner) {
+                    if (walletState && walletState.accounts && walletState.accounts.length > 0) {
+                        const acc = walletState.accounts[walletState.activeAccountIndex || 0] || walletState.accounts[0];
+                        const nameEl = document.getElementById('welcomeSavedAccountName');
+                        const addrEl = document.getElementById('welcomeSavedAccountAddr');
+                        if (nameEl) nameEl.textContent = acc.name || 'Account 1';
+                        if (addrEl && acc.address) {
+                            addrEl.textContent = acc.address.slice(0, 8) + '...' + acc.address.slice(-6);
+                        }
+                        banner.style.display = 'flex';
+                    } else {
+                        banner.style.display = 'none';
+                    }
+                }
             }
 
             function showDashboard() {
+                sessionStorage.setItem('coldwallet_unlocked', 'true');
                 const portal = document.getElementById('welcomePortal');
                 const workspace = document.querySelector('.workspace-grid');
                 const bottomBar = document.querySelector('.mobile-bottom-bar');
@@ -3075,6 +3126,27 @@
 
             window.showWelcomePortal = showWelcomePortal;
             window.showDashboard = showDashboard;
+
+            // Wire up Unlock button on Welcome Portal
+            const btnWelcomeUnlock = document.getElementById('btnWelcomeUnlock');
+            if (btnWelcomeUnlock) {
+                btnWelcomeUnlock.addEventListener('click', async () => {
+                    showDashboard();
+                    updateHeaderUI();
+                    await syncBalances();
+                    await syncTransactions();
+                    showToast('Vault unlocked. Welcome back!', 'success');
+                });
+            }
+
+            // Wire up Lock button in top navbar
+            const btnHeaderLock = document.getElementById('btnHeaderLock');
+            if (btnHeaderLock) {
+                btnHeaderLock.addEventListener('click', () => {
+                    showWelcomePortal();
+                    showToast('Wallet locked. Returned to Welcome page.', 'info');
+                });
+            }
 
             // Wire up Welcome Portal buttons
             const btnWelcomeCreate = document.getElementById('btnWelcomeCreate');
@@ -3118,15 +3190,19 @@
             }
 
             let hasWallet = loadWalletState();
+            const isUnlocked = sessionStorage.getItem('coldwallet_unlocked') === 'true';
 
-            if (hasWallet && walletState.accounts && walletState.accounts.length > 0) {
+            if (isUnlocked && hasWallet && walletState.accounts && walletState.accounts.length > 0) {
                 showDashboard();
                 updateHeaderUI();
                 await syncBalances();
                 await syncTransactions();
             } else {
-                // First-time or signed out: Present Welcome & Sign-Up Portal
+                // Fresh visit / link clicked: Always present Welcome & Sign-Up Portal first
                 showWelcomePortal();
+                if (hasWallet) {
+                    updateHeaderUI();
+                }
             }
 
             fetchMarketPrices();

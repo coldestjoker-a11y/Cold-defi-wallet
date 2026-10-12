@@ -295,6 +295,18 @@ body {
     transform: scale(1.05);
 }
 
+.dashboard-sub-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 12px;
+    flex-wrap: wrap;
+}
+
+.dashboard-network-row {
+    display: none;
+}
+
 /* -------------------------------------------------------------------------
    Workspace Layout
    ------------------------------------------------------------------------- */
@@ -1357,34 +1369,63 @@ button {
         white-space: nowrap;
     }
 
-    /* Single-row compact 5-action grid saves 200px+ vertical space */
+    .dashboard-sub-row {
+        display: flex !important;
+        align-items: center !important;
+        gap: 6px !important;
+        margin-top: 10px !important;
+        flex-wrap: nowrap !important;
+        width: 100% !important;
+    }
+
+    .dashboard-network-row {
+        display: flex !important;
+        align-items: center !important;
+        margin-top: 6px !important;
+        width: 100% !important;
+    }
+
+    .dashboard-network-row .mobile-network-pill {
+        display: inline-flex !important;
+        cursor: pointer;
+    }
+
+    /* Single-row compact 5-action grid saves 200px+ vertical space with zero overflow */
     .action-cluster {
-        display: grid;
-        grid-template-columns: repeat(5, 1fr);
-        gap: 6px;
-        width: 100%;
-        margin-top: 14px;
+        display: grid !important;
+        grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
+        gap: 5px !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+        margin-top: 12px;
     }
 
     .action-cluster button {
-        width: 100%;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        padding: 8px 3px;
-        min-height: 52px;
-        font-size: 11px;
-        font-weight: 600;
-        gap: 4px;
+        width: 100% !important;
+        min-width: 0 !important;
+        max-width: 100% !important;
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        justify-content: center !important;
+        padding: 7px 2px !important;
+        min-height: 50px !important;
+        font-size: 11px !important;
+        font-weight: 600 !important;
+        gap: 3px !important;
         border-radius: var(--radius-md);
-        box-sizing: border-box;
+        box-sizing: border-box !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+        white-space: nowrap !important;
     }
 
     .action-cluster button svg {
-        width: 16px !important;
-        height: 16px !important;
-        margin: 0;
+        width: 15px !important;
+        height: 15px !important;
+        margin: 0 !important;
+        flex-shrink: 0 !important;
     }
 
     .action-cluster .btn-faucet {
@@ -1400,6 +1441,14 @@ button {
     .asset-tile {
         padding: 10px !important;
         gap: 4px !important;
+        border-radius: 8px !important;
+        box-sizing: border-box !important;
+    }
+
+    .empty-portfolio-notice {
+        padding: 8px 12px !important;
+        gap: 6px !important;
+        margin-top: 6px !important;
         border-radius: 8px !important;
     }
 
@@ -1644,34 +1693,63 @@ button {
         height: 14px !important;
     }
 
-    /* 5-action grid perfectly fitted in one row for phones */
+    .dashboard-sub-row {
+        display: flex !important;
+        align-items: center !important;
+        gap: 5px !important;
+        margin-top: 8px !important;
+        flex-wrap: nowrap !important;
+        width: 100% !important;
+    }
+
+    .dashboard-network-row {
+        display: flex !important;
+        align-items: center !important;
+        margin-top: 6px !important;
+        width: 100% !important;
+    }
+
+    .dashboard-network-row .mobile-network-pill {
+        display: inline-flex !important;
+        cursor: pointer;
+    }
+
+    /* 5-action grid perfectly fitted in one row for phones - zero overflow */
     .action-cluster {
-        display: grid;
-        grid-template-columns: repeat(5, 1fr);
-        gap: 4px;
-        margin-top: 10px;
-        width: 100%;
+        display: grid !important;
+        grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
+        gap: 4px !important;
+        margin-top: 10px !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
     }
 
     .action-cluster button {
-        width: 100%;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        padding: 7px 1px;
-        min-height: 48px;
-        font-size: 10px;
-        font-weight: 600;
-        gap: 3px;
-        border-radius: 6px;
-        box-sizing: border-box;
+        width: 100% !important;
+        min-width: 0 !important;
+        max-width: 100% !important;
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        justify-content: center !important;
+        padding: 6px 1px !important;
+        min-height: 46px !important;
+        font-size: 10px !important;
+        font-weight: 600 !important;
+        gap: 2px !important;
+        border-radius: 6px !important;
+        box-sizing: border-box !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+        white-space: nowrap !important;
     }
 
     .action-cluster button svg {
-        width: 15px !important;
-        height: 15px !important;
-        margin: 0;
+        width: 14px !important;
+        height: 14px !important;
+        margin: 0 !important;
+        flex-shrink: 0 !important;
     }
 
     .action-cluster .btn-faucet {
@@ -1683,6 +1761,17 @@ button {
         grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
         gap: 6px !important;
         margin-bottom: 4px;
+    }
+
+    .empty-portfolio-notice {
+        padding: 6px 8px !important;
+        gap: 4px !important;
+        margin-top: 6px !important;
+        border-radius: 6px !important;
+    }
+
+    .empty-notice-sub {
+        font-size: 10px !important;
     }
 
     .asset-tile {
@@ -1986,11 +2075,21 @@ button {
         height: 26px;
     }
 
+    .action-cluster {
+        gap: 3px !important;
+        grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
+    }
+
     .action-cluster button {
-        padding: 5px 0px;
-        font-size: 9px;
-        min-height: 44px;
-        gap: 2px;
+        padding: 5px 0px !important;
+        font-size: 9px !important;
+        min-height: 42px !important;
+        gap: 2px !important;
+        min-width: 0 !important;
+        max-width: 100% !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+        white-space: nowrap !important;
     }
 
     .action-cluster button svg {
@@ -2305,7 +2404,72 @@ button {
     color: var(--text-secondary);
     line-height: 1.5;
     max-width: 420px;
-    margin-bottom: 24px;
+    margin-bottom: 20px;
+}
+
+.welcome-saved-banner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    width: 100%;
+    padding: 12px 14px;
+    background: linear-gradient(135deg, rgba(37, 99, 235, 0.12), rgba(6, 182, 212, 0.08));
+    border: 1px solid rgba(59, 130, 246, 0.35);
+    border-radius: var(--radius-md);
+    margin-bottom: 14px;
+    box-sizing: border-box;
+}
+
+.welcome-saved-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-align: left;
+}
+
+.welcome-saved-avatar {
+    width: 34px;
+    height: 34px;
+    border-radius: var(--radius-full);
+    background: var(--accent-blue-bg);
+    border: 1px solid var(--accent-blue);
+    color: var(--accent-blue);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.welcome-saved-label {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--accent-cyan);
+    font-weight: 700;
+}
+
+.welcome-saved-account {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.welcome-saved-addr {
+    font-size: 11px;
+    font-family: var(--font-mono);
+    color: var(--text-muted);
+}
+
+.welcome-unlock-btn {
+    padding: 8px 14px;
+    font-size: 12px;
+    font-weight: 700;
+    white-space: nowrap;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    flex-shrink: 0;
 }
 
 .welcome-actions {
