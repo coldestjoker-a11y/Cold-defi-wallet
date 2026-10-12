@@ -237,8 +237,8 @@
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg>
                     Asset Portfolio &amp; Holdings
                 </h3>
-                <div style="display: flex; align-items: center; gap: 14px; flex-wrap: wrap;">
-                    <button class="btn-secondary" id="btnOpenImportTokenModal" style="min-height: 28px; padding: 4px 10px; font-size: 11px;">+ Import Token</button>
+                <div class="portfolio-header-controls" style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap; max-width: 100%;">
+                    <button class="btn-secondary" id="btnOpenImportTokenModal" style="min-height: 28px; padding: 4px 8px; font-size: 11px;">+ Import Token</button>
                     <label class="owned-toggle-wrap" title="Show only tokens with a positive balance">
                         <input type="checkbox" id="toggleOnlyOwned" checked>
                         <span>Only Owned Tokens</span>
@@ -1388,11 +1388,11 @@
                 notice.className = 'empty-portfolio-notice';
                 notice.style.gridColumn = '1 / -1';
                 notice.innerHTML = `
-                    <div class="empty-notice-sub" style="display: flex; align-items: center; justify-content: space-between; gap: 8px; flex-wrap: wrap; width: 100%;">
-                        <span>💡 Balance $0.00 &mdash; Ready for testnet funding</span>
-                        <div style="display: flex; gap: 6px;">
-                            <button class="btn-faucet" style="min-height: 24px; padding: 2px 8px; font-size: 10px;" onclick="window.requestQuickFaucet('ETH', 1.0)">+ 1.0 ETH</button>
-                            <button class="btn-faucet" style="min-height: 24px; padding: 2px 8px; font-size: 10px;" onclick="window.requestQuickFaucet('USDC', 500)">+ 500 USDC</button>
+                    <div class="empty-notice-sub" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; width: 100%; text-align: center; box-sizing: border-box;">
+                        <span>💡 Balance $0.00 &bull; Ready for testnet funding</span>
+                        <div style="display: flex; gap: 6px; justify-content: center; flex-wrap: wrap;">
+                            <button class="btn-faucet" style="min-height: 24px; padding: 2px 10px; font-size: 10px;" onclick="window.requestQuickFaucet('ETH', 1.0)">+ 1.0 ETH</button>
+                            <button class="btn-faucet" style="min-height: 24px; padding: 2px 10px; font-size: 10px;" onclick="window.requestQuickFaucet('USDC', 500)">+ 500 USDC</button>
                         </div>
                     </div>
                 `;
@@ -3120,7 +3120,13 @@
                 const workspace = document.querySelector('.workspace-grid');
                 const bottomBar = document.querySelector('.mobile-bottom-bar');
                 if (portal) portal.style.display = 'none';
-                if (workspace) workspace.style.display = 'grid';
+                if (workspace) {
+                    workspace.style.display = 'grid';
+                    workspace.style.gridTemplateColumns = 'minmax(0, 1fr)';
+                    workspace.style.width = '100%';
+                    workspace.style.maxWidth = '100vw';
+                    workspace.style.overflowX = 'hidden';
+                }
                 if (bottomBar) bottomBar.style.display = '';
             }
 
