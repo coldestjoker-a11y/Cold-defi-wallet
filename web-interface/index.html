@@ -60,6 +60,70 @@
         </div>
     </header>
 
+    <!-- PRE-PAGE: Welcome & Sign-Up Onboarding Portal -->
+    <div id="welcomePortal" class="welcome-portal" style="display: none;">
+        <div class="welcome-card">
+            <div class="welcome-header">
+                <div class="welcome-logo-badge">
+                    <img src="logo.png" alt="Cold Wallet Logo" class="welcome-logo-img">
+                </div>
+                <div class="welcome-tag">NON-CUSTODIAL HD VAULT</div>
+                <h1 class="welcome-title">Cold Wallet</h1>
+                <p class="welcome-subtitle">
+                    The enterprise multi-chain self-custody crypto wallet. Sign up to generate your private cryptographic keys client-side.
+                </p>
+            </div>
+
+            <div class="welcome-actions">
+                <!-- Sign Up / Create New Wallet -->
+                <button class="welcome-btn-primary" id="btnWelcomeCreate">
+                    <div class="welcome-btn-icon">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path><line x1="12" y1="8" x2="12" y2="14"></line><line x1="9" y1="11" x2="15" y2="11"></line></svg>
+                    </div>
+                    <div class="welcome-btn-text">
+                        <span class="welcome-btn-title">Create New Wallet</span>
+                        <span class="welcome-btn-desc">Sign up with a new 12-word BIP-39 recovery phrase</span>
+                    </div>
+                    <div class="welcome-badge-rec">New</div>
+                </button>
+
+                <!-- Sign In / Import Wallet -->
+                <button class="welcome-btn-secondary" id="btnWelcomeImport">
+                    <div class="welcome-btn-icon" style="color: var(--accent-cyan); border-color: rgba(6, 182, 212, 0.4);">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                    </div>
+                    <div class="welcome-btn-text">
+                        <span class="welcome-btn-title">I Already Have a Wallet</span>
+                        <span class="welcome-btn-desc">Import existing seed phrase or private key</span>
+                    </div>
+                </button>
+
+                <!-- Connect Web3 Extension -->
+                <button class="welcome-btn-secondary" id="btnWelcomeConnect">
+                    <div class="welcome-btn-icon" style="color: var(--accent-amber); border-color: rgba(245, 158, 11, 0.4);">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
+                    </div>
+                    <div class="welcome-btn-text">
+                        <span class="welcome-btn-title">Connect Web3 Extension</span>
+                        <span class="welcome-btn-desc">MetaMask, Rabby, Coinbase Wallet</span>
+                    </div>
+                </button>
+
+                <!-- Demo Mode -->
+                <button class="welcome-btn-ghost" id="btnWelcomeDemo">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+                    <span>Instant Demo Mode (Pre-funded Testnet)</span>
+                </button>
+            </div>
+
+            <div class="welcome-trust-row">
+                <span class="welcome-trust-pill"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg> 100% Self-Custodial</span>
+                <span class="welcome-trust-pill"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg> BIP-39 / BIP-44</span>
+                <span class="welcome-trust-pill"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg> Multi-Chain EVM</span>
+            </div>
+        </div>
+    </div>
+
     <!-- Main Workspace -->
     <main class="workspace-grid">
         <!-- Consolidated Custody Valuation & Quick Actions -->
@@ -94,6 +158,13 @@
                         <div class="active-address-pill" id="copyAddressPill" title="Click to copy full address" style="margin-top: 0;">
                             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
                             <span id="activeAddressFull">Loading address...</span>
+                        </div>
+
+                        <!-- Mobile Network Switcher Pill (down on dashboard on mobile) -->
+                        <div class="network-badge mobile-network-pill" id="mobileNetworkSelectBtn" title="Switch Blockchain Network">
+                            <span class="network-dot"></span>
+                            <span id="currentNetworkLabelMobile">Sepolia Testnet</span>
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
                         </div>
 
                         <!-- Dashboard Quick Nav: Address Book & Contacts Box -->
@@ -1173,8 +1244,10 @@
 
             const net = NETWORKS[walletState.activeNetwork] || NETWORKS['Sepolia'];
             document.getElementById('currentNetworkLabel').textContent = net.name;
-            const dot = document.querySelector('.network-dot');
-            if (dot) dot.style.backgroundColor = net.color;
+            const mobileNet = document.getElementById('currentNetworkLabelMobile');
+            if (mobileNet) mobileNet.textContent = net.name;
+            const dots = document.querySelectorAll('.network-dot');
+            dots.forEach(d => d.style.backgroundColor = net.color);
         }
 
         function calculatePortfolioValuation() {
@@ -1656,6 +1729,7 @@
                 walletState.transactions = [];
                 
                 saveWalletState();
+                showDashboard();
                 closeModal('onboardingModal');
                 closeModal('accountManagerModal');
                 updateHeaderUI();
@@ -1705,6 +1779,7 @@
                 }];
                 walletState.activeAccountIndex = 0;
                 saveWalletState();
+                showDashboard();
                 closeModal('importMnemonicModal');
                 updateHeaderUI();
                 await syncBalances();
@@ -1747,6 +1822,7 @@
                 }];
                 walletState.activeAccountIndex = 0;
                 saveWalletState();
+                showDashboard();
                 closeModal('importKeyModal');
                 updateHeaderUI();
                 await syncBalances();
@@ -1895,6 +1971,7 @@
                     walletState.activeAccountIndex = walletState.accounts.length - 1;
                 }
                 saveWalletState();
+                showDashboard();
                 updateHeaderUI();
                 closeModal('onboardingModal');
                 closeModal('accountManagerModal');
@@ -2977,6 +3054,63 @@
                 });
             }
 
+            // Welcome Portal & Dashboard View Switchers
+            function showWelcomePortal() {
+                const portal = document.getElementById('welcomePortal');
+                const workspace = document.querySelector('.workspace-grid');
+                const bottomBar = document.querySelector('.mobile-bottom-bar');
+                if (portal) portal.style.display = 'flex';
+                if (workspace) workspace.style.display = 'none';
+                if (bottomBar) bottomBar.style.display = 'none';
+            }
+
+            function showDashboard() {
+                const portal = document.getElementById('welcomePortal');
+                const workspace = document.querySelector('.workspace-grid');
+                const bottomBar = document.querySelector('.mobile-bottom-bar');
+                if (portal) portal.style.display = 'none';
+                if (workspace) workspace.style.display = 'grid';
+                if (bottomBar) bottomBar.style.display = '';
+            }
+
+            window.showWelcomePortal = showWelcomePortal;
+            window.showDashboard = showDashboard;
+
+            // Wire up Welcome Portal buttons
+            const btnWelcomeCreate = document.getElementById('btnWelcomeCreate');
+            if (btnWelcomeCreate) {
+                btnWelcomeCreate.addEventListener('click', async () => {
+                    await createNewWallet();
+                });
+            }
+            const btnWelcomeImport = document.getElementById('btnWelcomeImport');
+            if (btnWelcomeImport) {
+                btnWelcomeImport.addEventListener('click', () => {
+                    openModal('importMnemonicModal');
+                });
+            }
+            const btnWelcomeConnect = document.getElementById('btnWelcomeConnect');
+            if (btnWelcomeConnect) {
+                btnWelcomeConnect.addEventListener('click', async () => {
+                    await connectInjectedWallet();
+                });
+            }
+            const btnWelcomeDemo = document.getElementById('btnWelcomeDemo');
+            if (btnWelcomeDemo) {
+                btnWelcomeDemo.addEventListener('click', async () => {
+                    await createNewWallet();
+                });
+            }
+
+            // Wire up mobile network switcher pill (down on dashboard)
+            const mobileNetBtn = document.getElementById('mobileNetworkSelectBtn');
+            if (mobileNetBtn) {
+                mobileNetBtn.addEventListener('click', () => {
+                    renderNetworksList();
+                    openModal('networkModal');
+                });
+            }
+
             const workspace = document.querySelector('.workspace-grid');
             if (workspace) {
                 workspace.classList.remove('vault-locked-blur');
@@ -2985,36 +3119,14 @@
 
             let hasWallet = loadWalletState();
 
-            if (!hasWallet || !walletState.accounts || walletState.accounts.length === 0) {
-                // Auto-provision initial wallet so the user is never stuck with an uninitialized state
-                try {
-                    const res = await fetch(`${API_BASE}/wallet/create`, { method: 'POST' });
-                    if (res.ok) {
-                        const data = await res.json();
-                        walletState.mnemonic = data.mnemonic;
-                        walletState.accounts = [{
-                            index: 0,
-                            name: 'Account 1',
-                            address: data.primary_account.address,
-                            private_key: data.primary_account.private_key
-                        }];
-                        walletState.activeAccountIndex = 0;
-                        walletState.holdings = {};
-                        walletState.transactions = [];
-                        saveWalletState();
-                        hasWallet = true;
-                    }
-                } catch (e) {
-                    console.error('Auto wallet provisioning error:', e);
-                }
-            }
-
             if (hasWallet && walletState.accounts && walletState.accounts.length > 0) {
+                showDashboard();
                 updateHeaderUI();
                 await syncBalances();
                 await syncTransactions();
             } else {
-                openModal('onboardingModal');
+                // First-time or signed out: Present Welcome & Sign-Up Portal
+                showWelcomePortal();
             }
 
             fetchMarketPrices();

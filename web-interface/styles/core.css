@@ -1287,17 +1287,13 @@ button {
         gap: 6px;
     }
 
-    .network-badge {
-        padding: 4px 8px;
-        font-size: 11px;
-        gap: 6px;
+    /* Move network selector down to dashboard on mobile */
+    .app-header #networkSelectBtn {
+        display: none !important;
     }
 
-    #currentNetworkLabel {
-        max-width: 85px;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
+    .mobile-network-pill {
+        display: inline-flex !important;
     }
 
     .account-selector-btn {
@@ -1396,13 +1392,19 @@ button {
     }
 
     .asset-grid {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 8px;
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+        gap: 8px !important;
     }
 
     .asset-tile {
-        padding: 12px;
-        gap: 6px;
+        padding: 10px !important;
+        gap: 4px !important;
+        border-radius: 8px !important;
+    }
+
+    .tile-spark {
+        display: none !important;
     }
 
     .seedphrase-grid {
@@ -1488,22 +1490,16 @@ button {
         gap: 5px;
     }
 
-    .network-badge {
-        padding: 4px 7px;
-        font-size: 10px;
-        gap: 4px;
+    /* Hide network badge from top navbar on mobile */
+    .app-header #networkSelectBtn {
+        display: none !important;
     }
 
-    .network-dot {
-        width: 6px;
-        height: 6px;
-    }
-
-    #currentNetworkLabel {
-        max-width: 62px;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
+    .mobile-network-pill {
+        display: inline-flex !important;
+        padding: 3px 8px !important;
+        font-size: 10px !important;
+        gap: 4px !important;
     }
 
     .account-selector-btn {
@@ -1683,41 +1679,59 @@ button {
     }
 
     .asset-grid {
-        grid-template-columns: 1fr;
-        gap: 6px;
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+        gap: 6px !important;
         margin-bottom: 4px;
     }
 
     .asset-tile {
-        padding: 8px 10px;
-        gap: 4px;
+        padding: 8px 8px !important;
+        gap: 3px !important;
+        border-radius: 8px !important;
+        min-height: auto !important;
     }
 
     .tile-coin-icon {
-        width: 22px;
-        height: 22px;
-        font-size: 10px;
+        width: 20px !important;
+        height: 20px !important;
+        font-size: 9px !important;
     }
 
     .tile-sym {
-        font-size: 12px;
+        font-size: 11px !important;
+    }
+
+    .tile-change {
+        font-size: 9px !important;
+    }
+
+    .tile-spark {
+        display: none !important;
     }
 
     .tile-qty {
-        font-size: 12px;
-        margin-top: 0;
+        font-size: 11px !important;
+        margin-top: 0 !important;
+        white-space: nowrap !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+    }
+
+    .tile-sym-label {
+        font-size: 9px !important;
     }
 
     .tile-bottom {
-        padding-top: 4px;
+        padding-top: 2px !important;
     }
 
     .tile-usd {
-        font-size: 11px;
+        font-size: 10px !important;
     }
 
     .tile-price {
-        font-size: 10px;
+        font-size: 9px !important;
     }
 
     #btnOpenImportTokenModal {
@@ -1939,13 +1953,23 @@ button {
         gap: 3px;
     }
 
-    .network-badge {
-        padding: 3px 5px;
-        font-size: 9px;
+    .app-header #networkSelectBtn {
+        display: none !important;
     }
 
-    #currentNetworkLabel {
-        max-width: 48px;
+    .mobile-network-pill {
+        display: inline-flex !important;
+        padding: 2px 6px !important;
+        font-size: 9px !important;
+    }
+
+    .asset-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+        gap: 4px !important;
+    }
+
+    .asset-tile {
+        padding: 6px 6px !important;
     }
 
     .account-selector-btn {
@@ -2193,4 +2217,231 @@ button {
     font-size: 12px;
     gap: 10px;
     text-align: center;
+}
+
+/* -------------------------------------------------------------------------
+   Mobile Network Switcher Pill (Down on Dashboard)
+   ------------------------------------------------------------------------- */
+.mobile-network-pill {
+    display: none;
+    margin-top: 0;
+}
+
+/* -------------------------------------------------------------------------
+   Welcome & Sign-Up Onboarding Portal (Pre-Page)
+   ------------------------------------------------------------------------- */
+.welcome-portal {
+    min-height: calc(100vh - var(--header-height));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 30px 16px;
+    background: radial-gradient(circle at 50% 20%, rgba(37, 99, 235, 0.12) 0%, rgba(7, 13, 24, 0.95) 70%);
+}
+
+.welcome-card {
+    background: var(--bg-surface);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.05);
+    max-width: 520px;
+    width: 100%;
+    padding: 32px 28px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    animation: fadeInPortal 0.3s ease-out;
+}
+
+@keyframes fadeInPortal {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.welcome-logo-badge {
+    width: 64px;
+    height: 64px;
+    border-radius: 16px;
+    background: #020617;
+    border: 1px solid rgba(59, 130, 246, 0.4);
+    box-shadow: 0 4px 20px rgba(37, 99, 235, 0.35);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 14px;
+    overflow: hidden;
+}
+
+.welcome-logo-badge img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.welcome-tag {
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    color: var(--accent-emerald);
+    background: var(--accent-emerald-bg);
+    border: 1px solid rgba(16, 185, 129, 0.3);
+    padding: 3px 10px;
+    border-radius: var(--radius-full);
+    text-transform: uppercase;
+    margin-bottom: 12px;
+}
+
+.welcome-title {
+    font-size: 24px;
+    font-weight: 800;
+    color: var(--text-primary);
+    margin-bottom: 8px;
+    letter-spacing: -0.02em;
+}
+
+.welcome-subtitle {
+    font-size: 13px;
+    color: var(--text-secondary);
+    line-height: 1.5;
+    max-width: 420px;
+    margin-bottom: 24px;
+}
+
+.welcome-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+}
+
+.welcome-btn-primary {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: linear-gradient(135deg, var(--accent-blue), #1d4ed8);
+    color: #fff;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: var(--radius-md);
+    padding: 12px 16px;
+    cursor: pointer;
+    text-align: left;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 16px rgba(37, 99, 235, 0.35);
+    position: relative;
+    width: 100%;
+}
+
+.welcome-btn-primary:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(37, 99, 235, 0.5);
+    background: linear-gradient(135deg, var(--accent-blue-hover), #1e40af);
+}
+
+.welcome-btn-secondary {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: var(--bg-card);
+    color: var(--text-primary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    padding: 11px 16px;
+    cursor: pointer;
+    text-align: left;
+    transition: all 0.15s ease;
+    width: 100%;
+}
+
+.welcome-btn-secondary:hover {
+    border-color: var(--border-hover);
+    background: var(--bg-card-hover);
+    transform: translateY(-1px);
+}
+
+.welcome-btn-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    color: #fff;
+}
+
+.welcome-btn-text {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    flex: 1;
+}
+
+.welcome-btn-title {
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.welcome-btn-desc {
+    font-size: 11px;
+    color: var(--text-muted);
+}
+
+.welcome-badge-rec {
+    font-size: 10px;
+    font-weight: 700;
+    padding: 2px 7px;
+    border-radius: var(--radius-full);
+    background: rgba(16, 185, 129, 0.2);
+    color: var(--accent-emerald);
+    border: 1px solid rgba(16, 185, 129, 0.4);
+    text-transform: uppercase;
+}
+
+.welcome-btn-ghost {
+    background: transparent;
+    border: 1px dashed var(--border-color);
+    color: var(--text-secondary);
+    padding: 9px 14px;
+    font-size: 11px;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    transition: all 0.15s;
+    margin-top: 4px;
+    width: 100%;
+}
+
+.welcome-btn-ghost:hover {
+    color: var(--text-primary);
+    border-color: var(--accent-cyan);
+    background: rgba(6, 182, 212, 0.05);
+}
+
+.welcome-trust-row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 22px;
+    padding-top: 18px;
+    border-top: 1px solid var(--border-color);
+    width: 100%;
+}
+
+.welcome-trust-pill {
+    font-size: 11px;
+    color: var(--text-muted);
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    background: var(--bg-card);
+    padding: 3px 8px;
+    border-radius: var(--radius-full);
+    border: 1px solid var(--border-color);
 }
