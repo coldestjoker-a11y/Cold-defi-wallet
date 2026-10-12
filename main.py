@@ -9,3 +9,4 @@ if defi_dir not in sys.path:
 
 # Import root FastAPI application
 from main import app  # noqa: E402
+
