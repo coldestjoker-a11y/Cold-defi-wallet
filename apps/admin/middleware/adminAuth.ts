@@ -62,19 +62,18 @@ export function adminAuthMiddleware(req: NextRequest) {
     return NextResponse.redirect(loginUrl);
   }
 
-  // 2. Validate token payload and role
+  // 2. Validate token payload and role (static session, no expiration timer)
   const payload = parseJwtPayload(token);
-  const nowInSec = Math.floor(Date.now() / 1000);
 
-  if (!payload || !payload.exp || payload.exp < nowInSec) {
+  if (!payload) {
     if (pathname.startsWith('/api/')) {
       return NextResponse.json(
-        { error: 'Unauthorized', detail: 'Admin session expired (15-minute TTL). Please re-authenticate.' },
+        { error: 'Unauthorized', detail: 'Invalid admin authorization credentials' },
         { status: 401 }
       );
     }
     const loginUrl = new URL('/login', req.url);
-    loginUrl.searchParams.set('expired', '1');
+    loginUrl.searchParams.set('redirect', pathname);
     return NextResponse.redirect(loginUrl);
   }
 

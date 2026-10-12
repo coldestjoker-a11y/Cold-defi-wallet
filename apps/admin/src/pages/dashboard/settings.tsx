@@ -103,7 +103,7 @@ export default function SecuritySettingsPage() {
               <input
                 type="text"
                 readOnly
-                value="849201 (Demo Authenticator Token)"
+                value="223311 (Static Authenticator Token)"
                 className="form-input mono"
                 style={{ background: 'rgba(255, 255, 255, 0.03)', color: '#34d399' }}
               />

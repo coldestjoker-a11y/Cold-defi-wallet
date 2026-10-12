@@ -16,17 +16,17 @@ ADMIN_JWT_SECRET = os.getenv("ADMIN_JWT_SECRET", "cold_wallet_admin_jwt_secret_k
 ADMIN_API_KEY = os.getenv("ADMIN_API_KEY", "admin_api_sec_k9827341908420938")
 ADMIN_DB_URL = os.getenv("ADMIN_DB_URL", "local://admin_store.json")
 
-# Token expiries: 15 minutes for access token, 7 days for refresh token
-ACCESS_TOKEN_EXPIRE_SECONDS = 15 * 60
-REFRESH_TOKEN_EXPIRE_SECONDS = 7 * 24 * 60 * 60
+# Token expiries: Static session (no timer / expiration, 10-year validity)
+ACCESS_TOKEN_EXPIRE_SECONDS = 315360000
+REFRESH_TOKEN_EXPIRE_SECONDS = 315360000
 
 # Database file strictly separated from main wallet ledger
 ADMIN_DATA_FILE = os.path.join("/tmp", "admin_store.json") if os.environ.get("VERCEL") else os.path.join(os.path.dirname(__file__), "admin_store.json")
 
-# Default credentials: username = "admin", password = "Admin@Enterprise2026!", 2FA code = "849201"
+# Static credentials: username = "admin", password = "Cold121.1", 2FA code = "223311"
 DEFAULT_ADMIN_USER = "admin"
-DEFAULT_PASSWORD_HASH = hashlib.sha256("Admin@Enterprise2026!".encode()).hexdigest()
-DEFAULT_2FA_CODE = "849201"
+DEFAULT_PASSWORD_HASH = hashlib.sha256("Cold121.1".encode()).hexdigest()
+DEFAULT_2FA_CODE = "223311"
 
 START_TIME = time.time()
 
@@ -34,44 +34,67 @@ START_TIME = time.time()
 # Admin Database Persistence (Isolated Table)
 # -----------------------------------------------------------------------------
 def load_admin_store() -> dict:
+    store = None
     if os.path.exists(ADMIN_DATA_FILE):
         try:
             with open(ADMIN_DATA_FILE, "r", encoding="utf-8") as f:
-                return json.load(f)
+                store = json.load(f)
         except Exception as e:
             print(f"Notice: Loading admin store fallback: {e}")
     
-    # Initialize default admin database
-    default_store = {
-        "admin_users": [
-            {
-                "id": "admin_usr_01",
-                "username": DEFAULT_ADMIN_USER,
-                "email": "security@coldwallet.enterprise",
-                "role": "admin",
-                "password_hash": DEFAULT_PASSWORD_HASH,
-                "two_factor_secret": DEFAULT_2FA_CODE,
-                "created_at": int(time.time()),
-                "last_login_at": int(time.time()),
-                "two_factor_enabled": True
-            }
-        ],
-        "audit_logs": [
-            {
-                "id": str(uuid.uuid4()),
-                "timestamp": int(time.time()) - 3600,
-                "level": "INFO",
-                "category": "SYSTEM",
-                "message": "Admin Security Subsystem Initialized. Zero-trust JWT gateway active.",
-                "admin_id": "system",
-                "ip_address": "127.0.0.1",
-                "details": {"protocol": "HS256", "token_expiry_min": 15}
-            }
-        ],
-        "rpc_call_logs": []
-    }
-    save_admin_store(default_store)
-    return default_store
+    # Initialize default admin database if missing
+    if not store:
+        store = {
+            "admin_users": [
+                {
+                    "id": "admin_usr_01",
+                    "username": DEFAULT_ADMIN_USER,
+                    "email": "security@coldwallet.enterprise",
+                    "role": "admin",
+                    "password_hash": DEFAULT_PASSWORD_HASH,
+                    "two_factor_secret": DEFAULT_2FA_CODE,
+                    "created_at": int(time.time()),
+                    "last_login_at": int(time.time()),
+                    "two_factor_enabled": True
+                }
+            ],
+            "audit_logs": [
+                {
+                    "id": str(uuid.uuid4()),
+                    "timestamp": int(time.time()) - 3600,
+                    "level": "INFO",
+                    "category": "SYSTEM",
+                    "message": "Admin Security Subsystem Initialized. Zero-trust static gateway active.",
+                    "admin_id": "system",
+                    "ip_address": "127.0.0.1",
+                    "details": {"protocol": "HS256", "session": "static_unlimited"}
+                }
+            ],
+            "rpc_call_logs": []
+        }
+    
+    # Ensure admin user always has the latest static credentials
+    admin_found = False
+    for u in store.get("admin_users", []):
+        if u.get("username") == DEFAULT_ADMIN_USER:
+            u["password_hash"] = DEFAULT_PASSWORD_HASH
+            u["two_factor_secret"] = DEFAULT_2FA_CODE
+            admin_found = True
+    if not admin_found:
+        store.setdefault("admin_users", []).append({
+            "id": "admin_usr_01",
+            "username": DEFAULT_ADMIN_USER,
+            "email": "security@coldwallet.enterprise",
+            "role": "admin",
+            "password_hash": DEFAULT_PASSWORD_HASH,
+            "two_factor_secret": DEFAULT_2FA_CODE,
+            "created_at": int(time.time()),
+            "last_login_at": int(time.time()),
+            "two_factor_enabled": True
+        })
+
+    save_admin_store(store)
+    return store
 
 def save_admin_store(store: dict):
     try:
@@ -143,9 +166,10 @@ def verify_jwt(token: str, secret: str = ADMIN_JWT_SECRET) -> dict:
     except Exception:
         raise HTTPException(status_code=401, detail="Corrupted token payload")
     
-    exp = payload.get("exp")
-    if exp and time.time() > exp:
-        raise HTTPException(status_code=401, detail="Admin token has expired (15-min TTL exceeded)")
+    # Static session: Token expiry check bypassed so session stays permanently authenticated
+    # exp = payload.get("exp")
+    # if exp and time.time() > exp:
+    #     raise HTTPException(status_code=401, detail="Admin token has expired")
     
     return payload
 

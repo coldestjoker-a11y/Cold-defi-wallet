@@ -5,14 +5,9 @@ import { getAdminUser, clearAdminSession, adminFetch } from '../lib/adminApiClie
 export const AdminNavbar: React.FC = () => {
   const router = useRouter();
   const [user, setUser] = useState<any>(null);
-  const [timeLeft, setTimeLeft] = useState<number>(900); // 15 mins
 
   useEffect(() => {
     setUser(getAdminUser());
-    const interval = setInterval(() => {
-      setTimeLeft((prev) => (prev > 0 ? prev - 1 : 0));
-    }, 1000);
-    return () => clearInterval(interval);
   }, []);
 
   const handleLogout = async () => {
@@ -23,12 +18,6 @@ export const AdminNavbar: React.FC = () => {
     }
     clearAdminSession();
     router.replace('/login');
-  };
-
-  const formatTime = (secs: number) => {
-    const m = Math.floor(secs / 60);
-    const s = secs % 60;
-    return `${m}:${s < 10 ? '0' : ''}${s}`;
   };
 
   return (
@@ -42,10 +31,10 @@ export const AdminNavbar: React.FC = () => {
       </div>
 
       <div className="navbar-right">
-        <div className="session-timer-pill" title="15-minute JWT session expiry count">
-          <span className="dot pulse"></span>
+        <div className="session-timer-pill" title="Static Session (No Timeout)">
+          <span className="dot pulse" style={{ backgroundColor: '#10b981' }}></span>
           <span>SESSION:</span>
-          <strong>{formatTime(timeLeft)}</strong>
+          <strong style={{ color: '#10b981' }}>STATIC (ACTIVE)</strong>
         </div>
 
         <div className="twofa-status-pill">

@@ -22,16 +22,10 @@ export const ProtectedAdminRoute: React.FC<ProtectedAdminRouteProps> = ({ childr
     }
 
     try {
-      // Decode JWT exp to check local expiration
+      // Decode JWT payload to check role (static session, no expiration timer)
       const parts = token.split('.');
       if (parts.length === 3) {
         const payload = JSON.parse(atob(parts[1].replace(/-/g, '+').replace(/_/g, '/')));
-        const now = Math.floor(Date.now() / 1000);
-        if (payload.exp && payload.exp < now) {
-          clearAdminSession();
-          router.replace('/login?expired=1');
-          return;
-        }
 
         if (payload.role !== 'admin' && user?.role !== 'admin') {
           clearAdminSession();

@@ -407,7 +407,7 @@
       <div class="pill">
         <span class="pulse-dot"></span>
         <span>SESSION:</span>
-        <strong id="sessionTimer">15:00</strong>
+        <strong id="sessionTimer">STATIC (ACTIVE)</strong>
       </div>
       <div class="pill" style="color: var(--accent-green); font-weight: 600;">
         <span>🛡️ 2FA VERIFIED</span>
@@ -482,20 +482,20 @@
         </div>
         <div class="form-row">
           <label>Master Password</label>
-          <input type="password" id="loginPass" value="Admin@Enterprise2026!" required autocomplete="current-password">
+          <input type="password" id="loginPass" value="Cold121.1" required autocomplete="current-password">
         </div>
         <div class="form-row">
           <label>2FA Authenticator Token (TOTP)</label>
-          <input type="text" id="login2FA" value="849201" class="mono" maxlength="6" required>
+          <input type="text" id="login2FA" value="223311" class="mono" maxlength="6" required>
         </div>
         <button type="submit" id="loginBtn" class="btn-submit">VERIFY 2FA & ENTER GATEWAY</button>
       </form>
 
       <div class="demo-creds">
-        <div style="font-weight: 600; color: #94a3b8; margin-bottom: 4px;">🔒 PRE-CONFIGURED DEMO CREDENTIALS:</div>
+        <div style="font-weight: 600; color: #94a3b8; margin-bottom: 4px;">🔒 STATIC ADMIN CREDENTIALS:</div>
         <div>Username: <span class="mono" style="color: #60a5fa;">admin</span></div>
-        <div>Password: <span class="mono" style="color: #60a5fa;">Admin@Enterprise2026!</span></div>
-        <div>2FA Token: <span class="mono" style="color: #34d399;">849201</span></div>
+        <div>Password: <span class="mono" style="color: #60a5fa;">Cold121.1</span></div>
+        <div>2FA Token: <span class="mono" style="color: #34d399;">223311</span></div>
       </div>
     </div>
   </div>
@@ -597,20 +597,8 @@
     }
 
     function startSessionTimer() {
-      sessionSecondsLeft = 900;
       if (timerInterval) clearInterval(timerInterval);
-      timerInterval = setInterval(() => {
-        sessionSecondsLeft--;
-        if (sessionSecondsLeft <= 0) {
-          clearInterval(timerInterval);
-          logoutAdmin();
-          showLoginModal('Admin session expired (15-min TTL exceeded).');
-        } else {
-          const m = Math.floor(sessionSecondsLeft / 60);
-          const s = sessionSecondsLeft % 60;
-          document.getElementById('sessionTimer').innerText = `${m}:${s < 10 ? '0' : ''}${s}`;
-        }
-      }, 1000);
+      document.getElementById('sessionTimer').innerText = 'STATIC (ACTIVE)';
     }
 
     async function authFetch(url, options = {}) {
@@ -1082,8 +1070,8 @@
             <h2 style="font-size: 16px; font-weight: 700; color: #fff; margin-bottom: 16px;">🛡️ Zero-Trust Session Policy</h2>
             <div style="margin-bottom: 16px;">
               <label style="display: block; font-size: 11px; color: var(--text-secondary); text-transform: uppercase; margin-bottom: 6px;">Access Token Expiry (TTL)</label>
-              <input type="text" readonly value="15 Minutes (Strict HS256 JWT)" class="input-field mono" style="width: 100%; color: #38bdf8;">
-              <span style="font-size: 11px; color: var(--text-muted); margin-top: 4px; display: block;">Enforced by verify_admin_auth dependency & Edge middleware.</span>
+              <input type="text" readonly value="Permanent / Static (No Expiry Timer)" class="input-field mono" style="width: 100%; color: #38bdf8;">
+              <span style="font-size: 11px; color: var(--text-muted); margin-top: 4px; display: block;">Static session active with no timeout.</span>
             </div>
             <div style="margin-bottom: 16px;">
               <label style="display: block; font-size: 11px; color: var(--text-secondary); text-transform: uppercase; margin-bottom: 6px;">Token Storage Policy</label>
@@ -1111,7 +1099,7 @@
             </div>
             <div class="form-row">
               <label>Configured 2FA Secret</label>
-              <input type="text" readonly value="849201 (Demo Authenticator Token)" class="input-field mono" style="width: 100%; color: #34d399;">
+              <input type="text" readonly value="223311 (Static Authenticator Token)" class="input-field mono" style="width: 100%; color: #34d399;">
             </div>
             <button class="btn-submit" onclick="alert('Admin security configuration verified.')">VERIFY POLICY INTEGRITY</button>
           </div>

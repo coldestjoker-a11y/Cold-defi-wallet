@@ -70,13 +70,13 @@ def run_suite():
     status, res = http_request("/api/admin/auth/login", method="POST", data={
         "username": "admin",
         "password": "WrongPassword123!",
-        "two_factor_code": "849201"
+        "two_factor_code": "223311"
     })
     log_test("Reject invalid admin password", status == 401, f"HTTP {status}")
 
     status, res = http_request("/api/admin/auth/login", method="POST", data={
         "username": "admin",
-        "password": "Admin@Enterprise2026!",
+        "password": "Cold121.1",
         "two_factor_code": "000000"
     })
     log_test("Reject invalid 2FA TOTP token", status == 401, f"HTTP {status}")
@@ -84,8 +84,8 @@ def run_suite():
     # 3. Successful 2FA Login
     status, res = http_request("/api/admin/auth/login", method="POST", data={
         "username": "admin",
-        "password": "Admin@Enterprise2026!",
-        "two_factor_code": "849201"
+        "password": "Cold121.1",
+        "two_factor_code": "223311"
     })
     log_test("Admin 2FA Login Success", status == 200, f"HTTP {status}")
     token = res.get("access_token")
@@ -93,9 +93,9 @@ def run_suite():
     log_test("JWT Token Generated", len(token) > 20, f"Prefix: {token[:16]}...")
     auth_header = {"Authorization": f"Bearer {token}"}
 
-    # 4. Token Expiry Specification
-    assert res.get("expires_in") == 900, "Token TTL must be 900 seconds (15 minutes)"
-    log_test("Strict 15-Minute TTL Enforced", True, "900s expiry")
+    # 4. Token Expiry Specification (Static session / no timer)
+    assert res.get("expires_in") == 315360000, "Token TTL must be static permanent"
+    log_test("Static Token Session Enforced (No Expiry Timer)", True, "315360000s expiry")
 
     # 5. Access /api/admin/transactions
     status, res = http_request("/api/admin/transactions?limit=10", headers=auth_header)

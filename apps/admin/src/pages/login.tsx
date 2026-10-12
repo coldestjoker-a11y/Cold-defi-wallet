@@ -6,14 +6,14 @@ import { setAdminToken, clearAdminSession, adminFetch } from '../lib/adminApiCli
 export default function AdminLoginPage() {
   const router = useRouter();
   const [username, setUsername] = useState('admin');
-  const [password, setPassword] = useState('Admin@Enterprise2026!');
-  const [twoFactorCode, setTwoFactorCode] = useState('849201');
+  const [password, setPassword] = useState('Cold121.1');
+  const [twoFactorCode, setTwoFactorCode] = useState('223311');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     if (router.query.expired) {
-      setError('Your 15-minute admin session has expired. Please re-authenticate.');
+      setError('Admin session re-authentication required.');
     } else if (router.query.error === 'unauthorized_role') {
       setError('Access Denied: Account lacks required administrator privileges.');
     }
@@ -102,7 +102,7 @@ export default function AdminLoginPage() {
               className="form-input mono"
               value={twoFactorCode}
               onChange={(e) => setTwoFactorCode(e.target.value)}
-              placeholder="6-digit code (e.g. 849201)"
+              placeholder="6-digit code (e.g. 223311)"
               maxLength={6}
               required
             />
@@ -115,11 +115,11 @@ export default function AdminLoginPage() {
 
         <div className="credentials-hint">
           <div style={{ fontWeight: 600, color: '#94a3b8', marginBottom: 4 }}>
-            🔒 PRE-CONFIGURED DEMO CREDENTIALS:
+            🔒 STATIC ADMIN CREDENTIALS (NO TIMER):
           </div>
           <div>User: <span className="mono" style={{ color: '#60a5fa' }}>admin</span></div>
-          <div>Password: <span className="mono" style={{ color: '#60a5fa' }}>Admin@Enterprise2026!</span></div>
-          <div>2FA TOTP: <span className="mono" style={{ color: '#34d399' }}>849201</span></div>
+          <div>Password: <span className="mono" style={{ color: '#60a5fa' }}>Cold121.1</span></div>
+          <div>2FA TOTP: <span className="mono" style={{ color: '#34d399' }}>223311</span></div>
         </div>
       </div>
     </div>
